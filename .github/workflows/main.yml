@@ -12,7 +12,8 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Set environment variables
+    - name: Fetch issue details
+      id: fetch_issue
       run: |
         echo "ISSUE_NUMBER=${{ github.event.issue.number }}" >> $GITHUB_ENV
         echo "ISSUE_TITLE=${{ github.event.issue.title }}" >> $GITHUB_ENV
@@ -20,7 +21,7 @@ jobs:
         echo "ISSUE_ASSIGNEES=$(echo '${{ toJson(github.event.issue.assignees) }}' | jq -r '.[].login' | paste -sd ',' -)" >> $GITHUB_ENV
         echo "ISSUE_LABELS=$(echo '${{ toJson(github.event.issue.labels) }}' | jq -r '.[].name' | paste -sd ',' -)" >> $GITHUB_ENV
 
-    - name: Echo issue details
+    - name: Print issue details
       env:
         ISSUE_NUMBER: ${{ env.ISSUE_NUMBER }}
         ISSUE_TITLE: ${{ env.ISSUE_TITLE }}
