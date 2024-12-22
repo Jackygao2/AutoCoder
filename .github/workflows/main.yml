@@ -6,8 +6,8 @@ on:
 
 jobs:
   generate_code:
-    if: contains(github.event.issue.labels.*.name, 'autocoder-bot')
     runs-on: ubuntu-latest
+    if: contains(github.event.issue.labels.*.name, 'autocoder-bot')
 
     steps:
     - name: Checkout repository
@@ -43,4 +43,3 @@ jobs:
 
     - name: List artifact contents
       run: ls -R autocoder-artifact/
-      
