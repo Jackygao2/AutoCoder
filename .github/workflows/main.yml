@@ -41,4 +41,3 @@ jobs:
         echo "$ISSUE_ASSIGNEES" | jq -r '.[] | "- \(.login)"'
         echo "Issue Labels:"
         echo "$ISSUE_LABELS" | jq -r '.[] | "- \(.name)"'
-
