@@ -34,10 +34,10 @@ jobs:
         ISSUE_ASSIGNEES: ${{ env.ISSUE_ASSIGNEES }}
         ISSUE_LABELS: ${{ env.ISSUE_LABELS }}
       run: |
-        echo "Issue Number: $ISSUE_NUMBER"
-        echo "Issue Title: $ISSUE_TITLE"
-        echo "Issue Body: $ISSUE_BODY"
+        echo "Issue Number: ${ISSUE_NUMBER}"
+        echo "Issue Title: ${ISSUE_TITLE}"
+        echo "Issue Body: ${ISSUE_BODY}"
         echo "Issue Assignees:"
-        echo "$ISSUE_ASSIGNEES" | jq -r '.[] | "- \(.login)"'
+        echo "${ISSUE_ASSIGNEES}" | jq -r '.[] | "- \(.login)"'
         echo "Issue Labels:"
-        echo "$ISSUE_LABELS" | jq -r '.[] | "- \(.name)"'
+        echo "${ISSUE_LABELS}" | jq -r '.[] | "- \(.name)"'
