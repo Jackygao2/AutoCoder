@@ -7,12 +7,11 @@ on:
 jobs:
   issue_details:
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: print issue details
+    - name: Print issue details
       env:
         ISSUE_NUMBER: ${{ github.event.issue.number }}
         ISSUE_TITLE: ${{ github.event.issue.title }}
@@ -23,5 +22,7 @@ jobs:
         echo "Issue Number: ${ISSUE_NUMBER}"
         echo "Issue Title: ${ISSUE_TITLE}"
         echo "Issue Body: ${ISSUE_BODY}"
-        echo "Issue Assignees: ${ISSUE_ASSIGNEES}"
-        echo "Issue Labels: ${ISSUE_LABELS}"
+        echo "Issue Assignees:"
+        echo "${ISSUE_ASSIGNEES}" | jq -r '.[] | "- \(.login)"'
+        echo "Issue Labels:"
+        echo "${ISSUE_LABELS}" | jq -r '.[] | "- \(.name)"'
