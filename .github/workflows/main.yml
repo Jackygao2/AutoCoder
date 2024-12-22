@@ -17,11 +17,23 @@ jobs:
         ISSUE_NUMBER: ${{ github.event.issue.number }}
         ISSUE_TITLE: ${{ github.event.issue.title }}
         ISSUE_BODY: ${{ github.event.issue.body }}
-        ISSUE_ASSIGNEES: ${{ github.event.issue.assignees }}
-        ISSUE_LABELS: ${{ github.event.issue.labels }}
       run: |
         echo "Issue Number: $ISSUE_NUMBER"
         echo "Issue Title: $ISSUE_TITLE"
         echo "Issue Body: $ISSUE_BODY"
-        echo "Issue Assignees: $ISSUE_ASSIGNEES"
-        echo "Issue Labels: $ISSUE_LABELS"
+
+    - name: Display issue assignees
+      if: ${{ github.event.issue.assignees }}
+      run: |
+        echo "Issue Assignees:"
+        for assignee in ${{ toJson(github.event.issue.assignees) }}; do
+          echo "- $assignee"
+        done
+
+    - name: Display issue labels
+      if: ${{ github.event.issue.labels }}
+      run: |
+        echo "Issue Labels:"
+        for label in ${{ toJson(github.event.issue.labels) }}; do
+          echo "- $label"
+        done
