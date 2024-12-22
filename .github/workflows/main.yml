@@ -12,22 +12,13 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Fetch issue details
-      id: fetch_issue
-      run: |
-        echo "ISSUE_NUMBER=${{ github.event.issue.number }}" >> $GITHUB_ENV
-        echo "ISSUE_TITLE=${{ github.event.issue.title }}" >> $GITHUB_ENV
-        echo "ISSUE_BODY=${{ github.event.issue.body }}" >> $GITHUB_ENV
-        echo "ISSUE_ASSIGNEES=$(echo '${{ toJson(github.event.issue.assignees) }}' | jq -r '.[].login' | paste -sd ',' -)" >> $GITHUB_ENV
-        echo "ISSUE_LABELS=$(echo '${{ toJson(github.event.issue.labels) }}' | jq -r '.[].name' | paste -sd ',' -)" >> $GITHUB_ENV
-
-    - name: Print issue details
+    - name: print issue details
       env:
-        ISSUE_NUMBER: ${{ env.ISSUE_NUMBER }}
-        ISSUE_TITLE: ${{ env.ISSUE_TITLE }}
-        ISSUE_BODY: ${{ env.ISSUE_BODY }}
-        ISSUE_ASSIGNEES: ${{ env.ISSUE_ASSIGNEES }}
-        ISSUE_LABELS: ${{ env.ISSUE_LABELS }}
+        ISSUE_NUMBER: ${{ github.event.issue.number }}
+        ISSUE_TITLE: ${{ github.event.issue.title }}
+        ISSUE_BODY: ${{ github.event.issue.body }}
+        ISSUE_ASSIGNEES: $(echo '${{ toJson(github.event.issue.assignees) }}' | jq -r '.[].login' | paste -sd ',' -)"
+        ISSUE_LABELS: $(echo '${{ toJson(github.event.issue.labels) }}' | jq -r '.[].name' | paste -sd ',' -)"
       run: |
         echo "Issue Number: ${ISSUE_NUMBER}"
         echo "Issue Title: ${ISSUE_TITLE}"
