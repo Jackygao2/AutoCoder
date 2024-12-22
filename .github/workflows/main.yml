@@ -7,19 +7,19 @@ on:
 jobs:
   generate_code:
     runs-on: ubuntu-latest
-    if: contains(github.event.issue.labels.*.name, 'autocoder-bot')
+    if: contains(join(github.event.issue.labels.*.name, ','), 'autocoder-bot')
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
 
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: '3.x'
 
     - name: Set up Node.js
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v4
       with:
         node-version: '14'
 
@@ -27,6 +27,9 @@ jobs:
       run: chmod +x scripts/script.sh
 
     - name: Run script
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       run: ./scripts/script.sh ${{ secrets.GITHUB_TOKEN }} ${{ github.repository }} ${{ github.event.issue.number }} ${{ secrets.OPENAI_API_KEY }}
 
     - name: Upload artifact
@@ -43,5 +46,6 @@ jobs:
 
     - name: List artifact contents
       run: ls -R autocoder-artifact/
+
 
 
