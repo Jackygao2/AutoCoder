@@ -1,4 +1,4 @@
-nname: Issue Trigger Workflow
+name: Issue Trigger Workflow
 
 on:
   issues:
@@ -17,23 +17,33 @@ jobs:
         echo "ISSUE_NUMBER=${{ github.event.issue.number }}" >> $GITHUB_ENV
         echo "ISSUE_TITLE=${{ github.event.issue.title }}" >> $GITHUB_ENV
         echo "ISSUE_BODY=${{ github.event.issue.body }}" >> $GITHUB_ENV
+        echo "ISSUE_ASSIGNEES=${{ toJson(github.event.issue.assignees) }}" >> $GITHUB_ENV
+        echo "ISSUE_LABELS=${{ toJson(github.event.issue.labels) }}" >> $GITHUB_ENV
 
     - name: Echo issue details
+      env:
+        ISSUE_NUMBER: ${{ env.ISSUE_NUMBER }}
+        ISSUE_TITLE: ${{ env.ISSUE_TITLE }}
+        ISSUE_BODY: ${{ env.ISSUE_BODY }}
       run: |
         echo "Issue Number: $ISSUE_NUMBER"
         echo "Issue Title: $ISSUE_TITLE"
         echo "Issue Body: $ISSUE_BODY"
 
     - name: Display issue assignees
+      env:
+        ISSUE_ASSIGNEES: ${{ env.ISSUE_ASSIGNEES }}
       run: |
         echo "Issue Assignees:"
-        for assignee in ${{ toJson(github.event.issue.assignees) }}; do
+        for assignee in $(echo $ISSUE_ASSIGNEES | jq -r '.[] | .login'); do
           echo "- $assignee"
         done
 
     - name: Display issue labels
+      env:
+        ISSUE_LABELS: ${{ env.ISSUE_LABELS }}
       run: |
         echo "Issue Labels:"
-        for label in ${{ toJson(github.event.issue.labels) }}; do
+        for label in $(echo $ISSUE_LABELS | jq -r '.[] | .name'); do
           echo "- $label"
         done
