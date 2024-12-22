@@ -17,8 +17,8 @@ jobs:
         ISSUE_NUMBER: ${{ github.event.issue.number }}
         ISSUE_TITLE: ${{ github.event.issue.title }}
         ISSUE_BODY: ${{ github.event.issue.body }}
-        ISSUE_ASSIGNEES: $(echo '${{ toJson(github.event.issue.assignees) }}' | jq -r '.[].login' | paste -sd ',' -)"
-        ISSUE_LABELS: $(echo '${{ toJson(github.event.issue.labels) }}' | jq -r '.[].name' | paste -sd ',' -)"
+        ISSUE_ASSIGNEES: ${{ toJson(github.event.issue.assignees) }}
+        ISSUE_LABELS: ${{ toJson(github.event.issue.labels) }}
       run: |
         echo "Issue Number: ${ISSUE_NUMBER}"
         echo "Issue Title: ${ISSUE_TITLE}"
