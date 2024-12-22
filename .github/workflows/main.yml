@@ -13,18 +13,12 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Set environment variables
-      env:
-        ISSUE_NUMBER: ${{ github.event.issue.number }}
-        ISSUE_TITLE: ${{ github.event.issue.title }}
-        ISSUE_BODY: ${{ github.event.issue.body }}
-        ISSUE_ASSIGNEES: ${{ toJson(github.event.issue.assignees) }}
-        ISSUE_LABELS: ${{ toJson(github.event.issue.labels) }}
       run: |
-        echo "ISSUE_NUMBER=${{ env.ISSUE_NUMBER }}" >> $GITHUB_ENV
-        echo "ISSUE_TITLE=${{ env.ISSUE_TITLE }}" >> $GITHUB_ENV
-        echo "ISSUE_BODY=${{ env.ISSUE_BODY }}" >> $GITHUB_ENV
-        echo "ISSUE_ASSIGNEES=${{ env.ISSUE_ASSIGNEES }}" >> $GITHUB_ENV
-        echo "ISSUE_LABELS=${{ env.ISSUE_LABELS }}" >> $GITHUB_ENV
+        echo "ISSUE_NUMBER=${{ github.event.issue.number }}" >> $GITHUB_ENV
+        echo "ISSUE_TITLE=${{ github.event.issue.title }}" >> $GITHUB_ENV
+        echo "ISSUE_BODY=${{ github.event.issue.body }}" >> $GITHUB_ENV
+        echo "ISSUE_ASSIGNEES=$(echo '${{ toJson(github.event.issue.assignees) }}' | jq -r '.[].login' | paste -sd ',' -)" >> $GITHUB_ENV
+        echo "ISSUE_LABELS=$(echo '${{ toJson(github.event.issue.labels) }}' | jq -r '.[].name' | paste -sd ',' -)" >> $GITHUB_ENV
 
     - name: Echo issue details
       env:
@@ -37,7 +31,5 @@ jobs:
         echo "Issue Number: ${ISSUE_NUMBER}"
         echo "Issue Title: ${ISSUE_TITLE}"
         echo "Issue Body: ${ISSUE_BODY}"
-        echo "Issue Assignees:"
-        echo "${ISSUE_ASSIGNEES}" | jq -r '.[] | "- \(.login)"'
-        echo "Issue Labels:"
-        echo "${ISSUE_LABELS}" | jq -r '.[] | "- \(.name)"'
+        echo "Issue Assignees: ${ISSUE_ASSIGNEES}"
+        echo "Issue Labels: ${ISSUE_LABELS}"
