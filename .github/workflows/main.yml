@@ -1,4 +1,4 @@
-name: Issue Trigger Workflow
+nname: Issue Trigger Workflow
 
 on:
   issues:
@@ -13,17 +13,18 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Set environment variables
-      env:
-        ISSUE_NUMBER: ${{ github.event.issue.number }}
-        ISSUE_TITLE: ${{ github.event.issue.title }}
-        ISSUE_BODY: ${{ github.event.issue.body }}
+      run: |
+        echo "ISSUE_NUMBER=${{ github.event.issue.number }}" >> $GITHUB_ENV
+        echo "ISSUE_TITLE=${{ github.event.issue.title }}" >> $GITHUB_ENV
+        echo "ISSUE_BODY=${{ github.event.issue.body }}" >> $GITHUB_ENV
+
+    - name: Echo issue details
       run: |
         echo "Issue Number: $ISSUE_NUMBER"
         echo "Issue Title: $ISSUE_TITLE"
         echo "Issue Body: $ISSUE_BODY"
 
     - name: Display issue assignees
-      if: ${{ github.event.issue.assignees }}
       run: |
         echo "Issue Assignees:"
         for assignee in ${{ toJson(github.event.issue.assignees) }}; do
@@ -31,7 +32,6 @@ jobs:
         done
 
     - name: Display issue labels
-      if: ${{ github.event.issue.labels }}
       run: |
         echo "Issue Labels:"
         for label in ${{ toJson(github.event.issue.labels) }}; do
