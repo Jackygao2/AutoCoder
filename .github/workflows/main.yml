@@ -28,6 +28,9 @@ jobs:
 
     - name: Verify script exists
       run: test -f ./scripts/script.sh && echo "Script exists" || echo "Script not found"
+    
+    - name: Verify script exists
+      run: ls -la scripts/
 
     - name: Run script
       env:
