@@ -7,6 +7,7 @@ set -e
 set -x
 
 # Get inputs from the environment
+echo "Running script with the following parameters:"
 GITHUB_TOKEN="$1"
 REPOSITORY="$2"
 ISSUE_NUMBER="$3"
