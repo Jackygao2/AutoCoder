@@ -32,10 +32,10 @@ jobs:
     - name: Verify script exists
       run: ls -la scripts/
 
+    - name: Display the script content
+      run: cat scripts/script.sh
+
     - name: Run script
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       run: ./scripts/script.sh $GITHUB_TOKEN ${{ github.repository }} ${{ github.event.issue.number }} $OPENAI_API_KEY
 
     - name: Upload artifact
