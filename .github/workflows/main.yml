@@ -32,6 +32,9 @@ jobs:
     - name: Verify script exists
       run: ls -la scripts/
 
+    - name: Install dos2unix
+      run: sudo apt-get update && sudo apt-get install -y dos2unix
+
     - name: Display the script content
       run: cat scripts/script.sh
 
