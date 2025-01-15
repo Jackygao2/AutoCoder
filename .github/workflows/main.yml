@@ -35,6 +35,9 @@ jobs:
     - name: Display the script content
       run: cat scripts/script.sh
 
+    - name: Convert line endings to Unix format
+      run: dos2unix scripts/script.sh
+
     - name: Run script
       run: ./scripts/script.sh $GITHUB_TOKEN ${{ github.repository }} ${{ github.event.issue.number }} $OPENAI_API_KEY
 
