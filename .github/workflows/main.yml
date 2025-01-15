@@ -7,7 +7,6 @@ on:
 jobs:
   generate_code:
     runs-on: ubuntu-latest
-    if: contains(github.event.issue.labels.*.name, 'autocoder-bot')
 
     steps:
     - name: Checkout repository
@@ -26,8 +25,14 @@ jobs:
     - name: Make script executable
       run: chmod +x ./scripts/script.sh
 
+    - name: Verify script exists
+      run: test -f ./scripts/script.sh && echo "Script exists" || echo "Script not found"
+
     - name: Run script
-      run: ./scripts/script.sh ${{ secrets.GITHUB_TOKEN }} ${{ github.repository }} ${{ github.event.issue.number }} ${{ secrets.OPENAI_API_KEY }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      run: ./scripts/script.sh $GITHUB_TOKEN ${{ github.repository }} ${{ github.event.issue.number }} $OPENAI_API_KEY
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
@@ -43,6 +48,4 @@ jobs:
 
     - name: List artifact contents
       run: ls -R autocoder-artifact/
-
-
 
